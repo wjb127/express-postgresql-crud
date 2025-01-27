@@ -37,6 +37,13 @@ router.get('/', async (req, res) => {
   }
 });
 
+// READ: ID로 특정 FCM 토픽 조회
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  const result = await pool.query('SELECT * FROM app_fcm_topic WHERE id = $1', [id]);
+  res.json(result.rows[0]);
+});
+
 // READ: 특정 앱의 FCM 토픽 데이터 조회
 router.get('/app/:app_id', async (req, res) => {
   const { app_id } = req.params;
