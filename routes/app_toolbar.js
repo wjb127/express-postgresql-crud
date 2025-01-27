@@ -72,13 +72,13 @@ router.delete('/:id', async (req, res) => {
 });
 
 // READ: 특정 앱의 툴바 항목 조회
-router.get('/app/:app_id', async (req, res) => {
+router.get('/app/:id', async (req, res) => {
   const { app_id } = req.params;
   
   try {
     const result = await pool.query(
-      'SELECT * FROM app_toolbar WHERE app_id = $1 ORDER BY position',
-      [app_id]
+      'SELECT * FROM app_toolbar WHERE id = $1 ORDER BY position',
+      [id]
     );
     res.json(result.rows);
   } catch (err) {
