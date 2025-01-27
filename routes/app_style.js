@@ -39,14 +39,33 @@ router.get('/', async (req, res) => {
 });
 
 // READ: 특정 앱의 스타일 데이터 조회
-router.get('/app/:id', async (req, res) => {
+router.get('/app/:app_id', async (req, res) => {
+  const { app_id } = req.params;
+  try {
+    const result = await pool.query(
+      'SELECT * FROM app_style WHERE app_id = $1',
+      [app_id]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// READ: ID로 특정 스타일 조회
+router.get('/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query(
       'SELECT * FROM app_style WHERE id = $1',
       [id]
     );
-    res.json(result.rows);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: '해당 스타일을 찾을 수 없습니다.' });
+    }
+
+    res.json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

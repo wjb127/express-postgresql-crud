@@ -21,8 +21,41 @@ router.post('/', async (req, res) => {
 // READ: 모든 툴바 데이터 조회
 router.get('/', async (req, res) => {
   try {
-    const result = await pool.query(`SELECT * FROM app_toolbar`);
+    const result = await pool.query('SELECT * FROM app_toolbar');
     res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// READ: 특정 앱의 툴바 데이터 조회
+router.get('/app/:app_id', async (req, res) => {
+  const { app_id } = req.params;
+  try {
+    const result = await pool.query(
+      'SELECT * FROM app_toolbar WHERE app_id = $1',
+      [app_id]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// READ: ID로 특정 툴바 조회
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await pool.query(
+      'SELECT * FROM app_toolbar WHERE id = $1',
+      [id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: '해당 툴바를 찾을 수 없습니다.' });
+    }
+
+    res.json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -62,10 +95,10 @@ router.delete('/:id', async (req, res) => {
     );
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ message: '해당 툴바 항목을 찾을 수 없습니다.' });
+      return res.status(404).json({ message: '해당 툴바를 찾을 수 없습니다.' });
     }
 
-    res.json({ message: '툴바 항목이 성공적으로 삭제되었습니다.' });
+    res.json({ message: '툴바가 성공적으로 삭제되었습니다.' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
