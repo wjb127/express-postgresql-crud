@@ -30,6 +30,13 @@ router.get('/:id', async (req, res) => {
   res.json(result.rows[0]);
 });
 
+// READ: 특정 앱의 메뉴 데이터 조회
+router.get('/app/:app_id', async (req, res) => {
+  const { app_id } = req.params;
+  const result = await pool.query('SELECT * FROM menu WHERE app_id = $1', [app_id]);
+  res.json(result.rows);
+});
+
 // UPDATE: 메뉴 데이터 업데이트
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
