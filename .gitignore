@@ -1,0 +1,19 @@
+# 환경 변수 파일
+.env
+.env.production
+.env.development
+.env.local
+.env.docker
+
+# 도커 볼륨 데이터
+postgres_data/
+
+# 로그 파일
+*.log
+
+# Docker
+docker-compose.yml
+
+# 기타 설정
+.DS_Store
+node_modules/ 

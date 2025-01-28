@@ -33,8 +33,15 @@ router.get('/:id', async (req, res) => {
 // READ: 특정 앱의 메뉴 데이터 조회
 router.get('/app/:app_id', async (req, res) => {
   const { app_id } = req.params;
-  const result = await pool.query('SELECT * FROM menu WHERE app_id = $1', [app_id]);
-  res.json(result.rows);
+  try {
+    const result = await pool.query(
+      'SELECT * FROM menu WHERE app_id = $1 ORDER BY position',
+      [app_id]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // UPDATE: 메뉴 데이터 업데이트

@@ -15,9 +15,10 @@ const port = 3000;
 
 // Middleware
 app.use(cors({
-  origin: '*', // 모든 도메인에서의 요청 허용
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // 허용할 HTTP 메서드
-  allowedHeaders: ['Content-Type', 'Authorization'] // 허용할 헤더
+  origin: '*',  // 모든 출처 허용
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true  // 추가
 }));
 app.use(bodyParser.json());
 
@@ -28,7 +29,7 @@ app.use('/api/toolbar', toolbarRoutes);
 app.use('/api/style', styleRoutes);
 app.use('/api/fcm_topic', fcmTopicRoutes);
 
-// Start server
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+// Start server - '0.0.0.0'으로 변경하여 모든 네트워크 인터페이스에서 접근 가능하도록 설정
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Server running on http://0.0.0.0:${port}`);
 });
